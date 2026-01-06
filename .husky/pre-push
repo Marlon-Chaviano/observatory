@@ -1,0 +1,31 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Pre-push hook
+# Purpose: Run type-check and tests before pushing to remote
+# This ensures no broken code reaches the remote repository
+
+echo "🚀 Running pre-push checks..."
+
+# Run type-check
+echo "📘 Running TypeScript type-check..."
+npm run type-check
+TYPE_CHECK_EXIT_CODE=$?
+
+if [ $TYPE_CHECK_EXIT_CODE -ne 0 ]; then
+  echo "❌ Type-check failed. Please fix TypeScript errors before pushing."
+  exit $TYPE_CHECK_EXIT_CODE
+fi
+
+# Run tests
+echo "🧪 Running tests..."
+npm run test
+TEST_EXIT_CODE=$?
+
+if [ $TEST_EXIT_CODE -ne 0 ]; then
+  echo "❌ Tests failed. Please fix failing tests before pushing."
+  exit $TEST_EXIT_CODE
+fi
+
+echo "✅ All pre-push checks passed!"
+exit 0

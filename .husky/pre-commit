@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Pre-commit hook
+# Purpose: Run lint-staged on staged files before commit
+# This ensures code quality and formatting before code enters the repository
+
+echo "🔍 Running lint-staged on staged files..."
+
+# Run lint-staged
+npx lint-staged
+
+# Exit with the exit code from lint-staged
+# If lint-staged fails, the commit will be blocked
+exit $?

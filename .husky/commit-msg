@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+# Commit-msg hook
+# Purpose: Validate commit messages using Conventional Commits format
+# This ensures all commits follow the project's commit message conventions
+
+echo "📝 Validating commit message format..."
+
+# Run commitlint on the commit message
+npx --no -- commitlint --edit "$1"
+
+# Exit with the exit code from commitlint
+# If commitlint fails, the commit will be blocked
+exit $?
