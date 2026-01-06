@@ -9,9 +9,11 @@
  * <Button variant="destructive" size="lg" disabled>Delete</Button>
  */
 
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
 import { forwardRef } from "react";
+
+import { cva, type VariantProps } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
 	// Base classes - always applied

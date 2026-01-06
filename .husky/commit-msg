@@ -1,6 +1,3 @@
-#!/usr/bin/env sh
-. "$(dirname -- "$0")/_/husky.sh"
-
 # Commit-msg hook
 # Purpose: Validate commit messages using Conventional Commits format
 # This ensures all commits follow the project's commit message conventions

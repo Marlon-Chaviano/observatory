@@ -13,9 +13,11 @@
  * </Card>
  */
 
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
 import { forwardRef } from "react";
+
+import { cva, type VariantProps } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
 
 const cardVariants = cva(
 	// Base classes
@@ -67,7 +69,7 @@ const CardTitle = forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHead
 		return (
 			<h3
 				ref={ref}
-				className={cn("text-2xl font-semibold leading-none tracking-tight", className)}
+				className={cn("text-2xl leading-none font-semibold tracking-tight", className)}
 				{...props}
 			/>
 		);
@@ -79,7 +81,7 @@ const CardDescription = forwardRef<
 	HTMLParagraphElement,
 	React.HTMLAttributes<HTMLParagraphElement>
 >(({ className, ...props }, ref) => {
-	return <p ref={ref} className={cn("text-sm text-muted-foreground", className)} {...props} />;
+	return <p ref={ref} className={cn("text-muted-foreground text-sm", className)} {...props} />;
 });
 CardDescription.displayName = "CardDescription";
 
@@ -97,4 +99,4 @@ const CardFooter = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
 );
 CardFooter.displayName = "CardFooter";
 
-export { Card, CardHeader, CardFooter, CardTitle, CardDescription, CardBody, cardVariants };
+export { Card, CardBody, CardDescription, CardFooter, CardHeader, CardTitle, cardVariants };

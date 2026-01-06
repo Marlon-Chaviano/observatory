@@ -7,18 +7,19 @@
 
 "use client";
 
+import { AlertCircle, CheckCircle2, Info, X } from "lucide-react";
+
+import { Alert, AlertDescription, AlertTitle } from "@/components/primitives/Alert";
 import { Badge } from "@/components/primitives/Badge";
 import { Button } from "@/components/primitives/Button";
 import {
 	Card,
+	CardBody,
+	CardDescription,
+	CardFooter,
 	CardHeader,
 	CardTitle,
-	CardDescription,
-	CardBody,
-	CardFooter,
 } from "@/components/primitives/Card";
-import { Alert, AlertTitle, AlertDescription } from "@/components/primitives/Alert";
-import { AlertCircle, CheckCircle2, Info, X } from "lucide-react";
 
 export function DesignSystemShowcase() {
 	return (
@@ -240,28 +241,28 @@ export function DesignSystemShowcase() {
 				<h2 className="mb-4 text-2xl font-semibold">Color Tokens</h2>
 				<div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
 					<div className="space-y-2">
-						<div className="h-20 rounded-md bg-primary text-primary-foreground flex items-center justify-center font-medium">
+						<div className="bg-primary text-primary-foreground flex h-20 items-center justify-center rounded-md font-medium">
 							Primary
 						</div>
-						<p className="text-sm text-muted-foreground">primary / primary-foreground</p>
+						<p className="text-muted-foreground text-sm">primary / primary-foreground</p>
 					</div>
 					<div className="space-y-2">
-						<div className="h-20 rounded-md bg-secondary text-secondary-foreground flex items-center justify-center font-medium">
+						<div className="bg-secondary text-secondary-foreground flex h-20 items-center justify-center rounded-md font-medium">
 							Secondary
 						</div>
-						<p className="text-sm text-muted-foreground">secondary / secondary-foreground</p>
+						<p className="text-muted-foreground text-sm">secondary / secondary-foreground</p>
 					</div>
 					<div className="space-y-2">
-						<div className="h-20 rounded-md bg-destructive text-destructive-foreground flex items-center justify-center font-medium">
+						<div className="bg-destructive text-destructive-foreground flex h-20 items-center justify-center rounded-md font-medium">
 							Destructive
 						</div>
-						<p className="text-sm text-muted-foreground">destructive / destructive-foreground</p>
+						<p className="text-muted-foreground text-sm">destructive / destructive-foreground</p>
 					</div>
 					<div className="space-y-2">
-						<div className="h-20 rounded-md bg-muted text-muted-foreground flex items-center justify-center font-medium">
+						<div className="bg-muted text-muted-foreground flex h-20 items-center justify-center rounded-md font-medium">
 							Muted
 						</div>
-						<p className="text-sm text-muted-foreground">muted / muted-foreground</p>
+						<p className="text-muted-foreground text-sm">muted / muted-foreground</p>
 					</div>
 				</div>
 			</section>

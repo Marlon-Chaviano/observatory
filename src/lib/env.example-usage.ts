@@ -11,7 +11,7 @@
 // Example 1: Using in a Service (Server or Client Component)
 // ============================================================================
 
-import { env } from "@/lib/env";
+import { env, isDebug, isDevelopment, isProduction } from "@/lib/env";
 
 export function exampleService() {
 	// ✅ CORRECT: Use validated env variables
@@ -100,11 +100,9 @@ export async function GET() {
 // Example 5: Using Environment Helpers
 // ============================================================================
 
-import { isDevelopment, isProduction, isDebug } from "@/lib/env";
-
 export function EnvironmentExample() {
 	if (isDevelopment) {
-		console.log("Running in development mode");
+		console.warn("Running in development mode");
 	}
 
 	if (isProduction) {
@@ -112,7 +110,7 @@ export function EnvironmentExample() {
 	}
 
 	if (isDebug) {
-		console.debug("Debug information");
+		console.warn("Debug information");
 	}
 
 	return null;

@@ -11,9 +11,11 @@
  * </Alert>
  */
 
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
 import { forwardRef } from "react";
+
+import { cva, type VariantProps } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
 
 const alertVariants = cva(
 	// Base classes
@@ -60,7 +62,7 @@ const AlertTitle = forwardRef<HTMLParagraphElement, React.HTMLAttributes<HTMLHea
 		return (
 			<h5
 				ref={ref}
-				className={cn("mb-1 font-medium leading-none tracking-tight", className)}
+				className={cn("mb-1 leading-none font-medium tracking-tight", className)}
 				{...props}
 			/>
 		);
@@ -76,4 +78,4 @@ const AlertDescription = forwardRef<
 });
 AlertDescription.displayName = "AlertDescription";
 
-export { Alert, AlertTitle, AlertDescription, alertVariants };
+export { Alert, AlertDescription, AlertTitle, alertVariants };

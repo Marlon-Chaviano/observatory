@@ -8,9 +8,11 @@
  * <Badge variant="destructive" size="lg">Error</Badge>
  */
 
-import { cva, type VariantProps } from "class-variance-authority";
-import { cn } from "@/lib/utils";
 import { forwardRef } from "react";
+
+import { cva, type VariantProps } from "class-variance-authority";
+
+import { cn } from "@/lib/utils";
 
 const badgeVariants = cva(
 	// Base classes - always applied
