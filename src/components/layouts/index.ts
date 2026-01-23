@@ -10,4 +10,5 @@
 // export { Footer } from "./Footer";
 // export { Sidebar } from "./Sidebar";
 
+export { Footer } from "./Footer";
 export { Navbar } from "./Navbar";
