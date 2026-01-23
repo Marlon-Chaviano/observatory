@@ -145,13 +145,26 @@ function getEnv(): Env {
 		return envSchema.parse(process.env);
 	} catch (error) {
 		if (error instanceof z.ZodError) {
-			const missingVars = error.errors
+			const missingVars = (
+				error.issues as Array<{
+					code: string;
+					received?: string;
+					path: (string | number)[];
+					message: string;
+				}>
+			)
 				.filter((err) => err.code === "invalid_type" && err.received === "undefined")
 				.map((err) => `  - ${err.path.join(".")}: ${err.message}`)
 				.join("\n");
 
-			const invalidVars = error.errors
-				.filter((err) => err.code !== "invalid_type" || err.received !== "undefined")
+			const invalidVars = (
+				error.issues as Array<{
+					code: string;
+					received?: string;
+					path: (string | number)[];
+					message: string;
+				}>
+			)
 				.map((err) => `  - ${err.path.join(".")}: ${err.message}`)
 				.join("\n");
 
@@ -239,7 +252,9 @@ if (typeof window === "undefined") {
 		if (error instanceof z.ZodError) {
 			console.error(
 				"\n❌ Invalid public environment variables in browser:\n",
-				error.errors.map((err) => `  - ${err.path.join(".")}: ${err.message}`).join("\n"),
+				(error.issues as Array<{ path: (string | number)[]; message: string }>)
+					.map((err) => `  - ${err.path.join(".")}: ${err.message}`)
+					.join("\n"),
 				"\n"
 			);
 		}

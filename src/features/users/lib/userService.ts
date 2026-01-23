@@ -51,8 +51,19 @@ export const userService = {
 	async getUsers(filters?: UserFilters): Promise<User[]> {
 		try {
 			const isServer = typeof window === "undefined";
+			// Transform UserFilters to API params (convert enums to strings)
+			const params: Record<string, string | number | boolean | null | undefined> | undefined =
+				filters
+					? {
+							...(filters.search && { search: filters.search }),
+							...(filters.role && { role: filters.role }),
+							...(filters.status && { status: filters.status }),
+							...(filters.sortBy && { sortBy: filters.sortBy }),
+							...(filters.sortOrder && { sortOrder: filters.sortOrder }),
+						}
+					: undefined;
 			const data = await apiClient.get<ApiUser[]>("/users", {
-				params: filters,
+				params,
 				...(isServer && {
 					next: {
 						tags: ["users"],
