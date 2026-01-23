@@ -24,7 +24,7 @@ export function Navbar() {
 					{/* Logo */}
 					<Logo />
 
-					{/* Links desktop */}
+					{/*Main Links desktop */}
 					<div className="flex gap-5">
 						<ul className="text-foreground hidden items-center gap-8 text-sm font-medium md:flex">
 							{NAVIGATION_MAIN.map((item) => (
@@ -35,7 +35,8 @@ export function Navbar() {
 								</li>
 							))}
 						</ul>
-						{/* Botón desktop */}
+
+						{/* CTA link desktop */}
 						<div className="hidden md:block">
 							<Link
 								href={NAVIGATION_CTA.href}
@@ -62,7 +63,6 @@ export function Navbar() {
 			</header>
 
 			{/* Menú móvil overlay */}
-
 			<nav
 				id="mobile-navigation"
 				aria-label="Navegación móvil"

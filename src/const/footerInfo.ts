@@ -1,5 +1,6 @@
 import { Globe, Mail, MapPin, Phone, Share2 } from "lucide-react";
 
+// Información del footer del sitio web
 export const FOOTER_INFO = {
 	description: `Órgano rector del sector energético y minero en la República de Cuba. Liderando la
 transición hacia una matriz energética sostenible.`,
