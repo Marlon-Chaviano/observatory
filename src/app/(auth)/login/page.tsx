@@ -1,5 +1,11 @@
 import React from "react";
 
-export default function Login() {
-	return <div>Login</div>;
+import { LoginForm } from "@/features/auth/components/LoginForm";
+
+export default function LoginPage() {
+	return (
+		<main className="bg-background-light dark:bg-background-dark flex min-h-[calc(100vh-80px)] w-full items-center justify-center p-4">
+			<LoginForm />
+		</main>
+	);
 }
