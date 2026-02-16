@@ -11,7 +11,7 @@ export const LoginForm = () => {
 	const [showPassword, setShowPassword] = useState(false);
 
 	return (
-		<div className="w-full max-w-[440px]">
+		<div className="w-full max-w-110">
 			<div className="bg-card text-card-foreground border-border rounded-2xl border p-8 shadow-xl">
 				{/* Header */}
 				<div className="mb-8 flex flex-col items-center gap-6 text-center">
@@ -56,7 +56,7 @@ export const LoginForm = () => {
 							<button
 								type="button"
 								onClick={() => setShowPassword(!showPassword)}
-								className="text-muted-foreground hover:text-primary absolute top-1/2 right-3 -translate-y-1/2 transition-colors"
+								className="text-muted-foreground hover:text-primary absolute top-1/2 right-3 flex -translate-y-1/2 items-center transition-colors"
 							>
 								<span className="material-symbols-outlined text-xl [font-variation-settings:'FILL'_1]">
 									{showPassword ? "visibility_off" : "visibility"}
