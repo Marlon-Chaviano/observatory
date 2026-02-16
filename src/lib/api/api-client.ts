@@ -8,11 +8,16 @@
  * Features:
  * - Configurable baseURL
  * - Dynamic headers
- * - Optional auth token
+ * - HTTP-only cookie-based authentication (credentials: 'include')
  * - Typed error handling
  * - Server/Client Component compatibility
  * - No UI logic
  * - 100% TypeScript
+ *
+ * Auth Strategy:
+ * - Uses HTTP-only cookies set by backend
+ * - Automatically sends credentials with each request
+ * - No token management needed on frontend
  */
 
 // ============================================================================
@@ -42,6 +47,7 @@ export interface RequestConfig extends Omit<RequestInit, "method" | "body"> {
 	next?: NextFetchRequestConfig;
 	/**
 	 * Whether to include auth token in request
+	 * @deprecated Ignored. Authentication is handled via HTTP-only cookies.
 	 * @default true
 	 */
 	includeAuth?: boolean;
@@ -49,6 +55,11 @@ export interface RequestConfig extends Omit<RequestInit, "method" | "body"> {
 	 * Custom timeout in milliseconds
 	 */
 	timeout?: number;
+	/**
+	 * Credentials policy for cookies
+	 * @default 'include' - Always send credentials (HTTP-only cookies)
+	 */
+	credentials?: RequestCredentials;
 }
 
 /**
@@ -166,15 +177,18 @@ export interface ApiClientConfig {
 	defaultHeaders?: HeadersInit;
 	/**
 	 * Function to get auth token (called on each request if includeAuth is true)
+	 * @deprecated Not used. Authentication is handled via HTTP-only cookies with credentials: 'include'
 	 */
 	getAuthToken?: () => string | null | Promise<string | null>;
 	/**
 	 * Custom header name for auth token
+	 * @deprecated Not used. Authentication is handled via HTTP-only cookies.
 	 * @default 'Authorization'
 	 */
 	authHeaderName?: string;
 	/**
 	 * Auth token prefix (e.g., 'Bearer')
+	 * @deprecated Not used. Authentication is handled via HTTP-only cookies.
 	 * @default 'Bearer'
 	 */
 	authTokenPrefix?: string;
@@ -197,14 +211,20 @@ export interface ApiClientConfig {
 /**
  * Centralized API Client
  *
+ * Uses HTTP-only cookies for authentication. Credentials are automatically
+ * sent with every request via `credentials: 'include'`.
+ *
  * Usage:
  * ```ts
  * const apiClient = new ApiClient({
  *   baseURL: 'https://api.example.com',
- *   getAuthToken: () => localStorage.getItem('token'),
  * });
  *
- * const data = await apiClient.request<User>('GET', '/users/1');
+ * // Login (sets HTTP-only cookie on response)
+ * await apiClient.post('/auth/login/', { username, password }, { includeAuth: false });
+ *
+ * // Subsequent requests automatically send the cookie
+ * const user = await apiClient.get<User>('/api/user/');
  * ```
  */
 export class ApiClient {
@@ -251,7 +271,8 @@ export class ApiClient {
 			headers: customHeaders = {},
 			params,
 			next,
-			includeAuth = true,
+			// includeAuth, // Deprecated - ignored
+			credentials = "include", // HTTP-only cookies
 			timeout = this.config.defaultTimeout,
 			...fetchOptions
 		} = config;
@@ -259,8 +280,8 @@ export class ApiClient {
 		// Build URL
 		const url = this.buildURL(endpoint, params);
 
-		// Build headers
-		const headers = await this.buildHeaders(customHeaders, includeAuth);
+		// Build headers (no auth token, using cookies)
+		const headers = await this.buildHeaders(customHeaders, false);
 
 		// Build request body
 		const body = this.buildBody(data, method);
@@ -271,6 +292,7 @@ export class ApiClient {
 			method,
 			headers,
 			body,
+			credentials, // Include HTTP-only cookies
 		};
 
 		// Add Next.js specific options for Server Components
@@ -372,10 +394,13 @@ export class ApiClient {
 
 	/**
 	 * Build headers for request
+	 *
+	 * Note: Authentication is handled via HTTP-only cookies.
+	 * No auth token is added to headers.
 	 */
 	private async buildHeaders(
 		customHeaders: HeadersInit,
-		includeAuth: boolean
+		_includeAuth: boolean // Deprecated parameter, ignored
 	): Promise<HeadersInit> {
 		const headers = new Headers(this.config.defaultHeaders);
 
@@ -384,16 +409,8 @@ export class ApiClient {
 			headers.set("Content-Type", "application/json");
 		}
 
-		// Add auth token if needed
-		if (includeAuth && this.config.getAuthToken) {
-			const token = await this.config.getAuthToken();
-			if (token) {
-				const authHeader = this.config.authTokenPrefix
-					? `${this.config.authTokenPrefix} ${token}`
-					: token;
-				headers.set(this.config.authHeaderName, authHeader);
-			}
-		}
+		// Authentication is handled via HTTP-only cookies (credentials: 'include')
+		// No auth token header is needed
 
 		// Merge custom headers (custom headers take precedence)
 		if (customHeaders instanceof Headers) {
@@ -617,7 +634,8 @@ export const apiClient = (() => {
 
 	return createApiClient({
 		baseURL,
-		// Add your auth token getter here
-		// getAuthToken: () => localStorage.getItem('token'),
+		// Authentication is handled via HTTP-only cookies
+		// Set by the backend in login response
+		// No token management needed on frontend
 	});
 })();
