@@ -78,14 +78,10 @@ export interface SignInResponse {
 export async function signIn(payload: SignInPayload): Promise<SignInResponse> {
 	try {
 		const { role, ...credentials } = payload;
-		const response = await apiClient.post<SignInResponse>(
-			`/api/authentication/${role}/login/`,
-			credentials,
-			{
-				// ❌ NO enviar cookies en login (usuario aún no autenticado)
-				credentials: "omit",
-			}
-		);
+		const response = await apiClient.post<SignInResponse>(`/auth/${role}/login/`, credentials, {
+			// ❌ NO enviar cookies en login (usuario aún no autenticado)
+			credentials: "omit",
+		});
 
 		return response;
 	} catch (error) {
@@ -97,7 +93,7 @@ export async function signIn(payload: SignInPayload): Promise<SignInResponse> {
 		// Wrap other errors as ApiError
 		throw new ApiError(
 			error instanceof Error ? error.message : "Sign in failed",
-			"UNKNOWN" as ApiErrorType
+			ApiErrorType.UNKNOWN
 		);
 	}
 }
