@@ -103,14 +103,10 @@ export interface SignUpResponse {
 export async function signUp(payload: SignUpPayload): Promise<SignUpResponse> {
 	try {
 		const { role, ...userData } = payload;
-		const response = await apiClient.post<SignUpResponse>(
-			`/api/authentication/${role}/register/`,
-			userData,
-			{
-				// ❌ NO enviar cookies en registro (usuario aún no autenticado)
-				credentials: "omit",
-			}
-		);
+		const response = await apiClient.post<SignUpResponse>(`/auth/${role}/register/`, userData, {
+			// ❌ NO enviar cookies en registro (usuario aún no autenticado)
+			credentials: "omit",
+		});
 
 		return response;
 	} catch (error) {
@@ -122,7 +118,7 @@ export async function signUp(payload: SignUpPayload): Promise<SignUpResponse> {
 		// Wrap other errors as ApiError
 		throw new ApiError(
 			error instanceof Error ? error.message : "Sign up failed",
-			"UNKNOWN" as ApiErrorType
+			ApiErrorType.UNKNOWN
 		);
 	}
 }
