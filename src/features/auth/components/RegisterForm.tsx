@@ -45,7 +45,7 @@ export const RegisterForm = () => {
 	};
 
 	return (
-		<div className="w-full max-w-[500px]">
+		<div className="w-full max-w-125">
 			<div className="bg-card text-card-foreground border-border rounded-2xl border p-8 shadow-xl">
 				{/* Header */}
 				<div className="mb-8 flex flex-col items-center gap-4 text-center">
