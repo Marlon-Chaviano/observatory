@@ -618,18 +618,16 @@ export function createApiClient(config: ApiClientConfig): ApiClient {
  * ```
  */
 export const apiClient = (() => {
-	// Lazy import to avoid circular dependencies
-	// env.ts validates variables at module load
-	let baseURL: string;
-	try {
-		// Import env at module level to ensure validation happens
-		// Using dynamic import would require async, so we use a try-catch
-		// eslint-disable-next-line @typescript-eslint/no-require-imports
-		const { env } = require("../env");
-		baseURL = env.NEXT_PUBLIC_API_URL;
-	} catch {
-		// Fallback if env validation fails (shouldn't happen in normal operation)
-		baseURL = process.env.NEXT_PUBLIC_API_URL || "/api";
+	// Read baseURL from NEXT_PUBLIC_API_URL environment variable
+	// Works in both Server Components and Client Components
+	// NEXT_PUBLIC_* variables are available in the browser at runtime
+	const baseURL = process.env.NEXT_PUBLIC_API_URL || "/api";
+
+	// Log the API URL in development for debugging
+	if (typeof window === "undefined" && process.env.NODE_ENV === "development") {
+		console.warn("[ApiClient] Using baseURL:", baseURL);
+	} else if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
+		console.warn("[ApiClient] Client-side baseURL:", baseURL);
 	}
 
 	return createApiClient({
