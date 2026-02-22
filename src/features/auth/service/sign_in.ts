@@ -6,6 +6,7 @@
  */
 
 import { apiClient, ApiError, ApiErrorType } from "@/lib/api/api-client";
+import { API_ENDPOINTS } from "@/lib/constants";
 
 /**
  * Login request payload
@@ -78,10 +79,14 @@ export interface SignInResponse {
 export async function signIn(payload: SignInPayload): Promise<SignInResponse> {
 	try {
 		const { role, ...credentials } = payload;
-		const response = await apiClient.post<SignInResponse>(`/auth/${role}/login/`, credentials, {
-			// ❌ NO enviar cookies en login (usuario aún no autenticado)
-			credentials: "omit",
-		});
+		const response = await apiClient.post<SignInResponse>(
+			API_ENDPOINTS.AUTH.LOGIN(role),
+			credentials,
+			{
+				// ❌ NO enviar cookies en login (usuario aún no autenticado)
+				credentials: "omit",
+			}
+		);
 
 		return response;
 	} catch (error) {

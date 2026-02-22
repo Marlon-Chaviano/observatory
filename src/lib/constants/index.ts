@@ -9,7 +9,11 @@
  */
 export const API_ENDPOINTS = {
 	USERS: "/users",
-	AUTH: "/auth",
+	AUTH: {
+		LOGIN: (role: string) => `/auth/login/${role}`,
+		REGISTER: (role: string) => `/auth/register/${role}`,
+		LOGOUT: "/auth/logout",
+	},
 	BILLING: "/billing",
 } as const;
 

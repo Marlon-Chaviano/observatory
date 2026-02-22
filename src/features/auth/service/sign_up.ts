@@ -6,6 +6,7 @@
  */
 
 import { apiClient, ApiError, ApiErrorType } from "@/lib/api/api-client";
+import { API_ENDPOINTS } from "@/lib/constants";
 
 /**
  * Sign up request payload
@@ -103,10 +104,14 @@ export interface SignUpResponse {
 export async function signUp(payload: SignUpPayload): Promise<SignUpResponse> {
 	try {
 		const { role, ...userData } = payload;
-		const response = await apiClient.post<SignUpResponse>(`/auth/${role}/register/`, userData, {
-			// ❌ NO enviar cookies en registro (usuario aún no autenticado)
-			credentials: "omit",
-		});
+		const response = await apiClient.post<SignUpResponse>(
+			API_ENDPOINTS.AUTH.REGISTER(role),
+			userData,
+			{
+				// ❌ NO enviar cookies en registro (usuario aún no autenticado)
+				credentials: "omit",
+			}
+		);
 
 		return response;
 	} catch (error) {
