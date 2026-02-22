@@ -618,17 +618,8 @@ export function createApiClient(config: ApiClientConfig): ApiClient {
  * ```
  */
 export const apiClient = (() => {
-	// Read baseURL from NEXT_PUBLIC_API_URL environment variable
-	// Works in both Server Components and Client Components
-	// NEXT_PUBLIC_* variables are available in the browser at runtime
-	const baseURL = process.env.NEXT_PUBLIC_API_URL || "/api";
-
-	// Log the API URL in development for debugging
-	if (typeof window === "undefined" && process.env.NODE_ENV === "development") {
-		console.warn("[ApiClient] Using baseURL:", baseURL);
-	} else if (typeof window !== "undefined" && process.env.NODE_ENV === "development") {
-		console.warn("[ApiClient] Client-side baseURL:", baseURL);
-	}
+	// base url , only api because of next.js rewrites, see next.config.ts
+	const baseURL = "/api";
 
 	return createApiClient({
 		baseURL,
