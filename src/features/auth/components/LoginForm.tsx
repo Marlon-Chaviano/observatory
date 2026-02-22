@@ -1,71 +1,19 @@
 "use client";
 
-import React, { useState } from "react";
-import { useForm } from "react-hook-form";
 import Link from "next/link";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Eye, EyeOff, Lock, LogIn, User } from "lucide-react";
-import * as z from "zod";
+import { Lock, LogIn, User } from "lucide-react";
 
 import { Button } from "@/components/primitives/Button";
-import { Input } from "@/components/primitives/Input";
-import { Label } from "@/components/primitives/Label";
-import { signIn } from "@/features/auht/service";
-import { ApiError } from "@/lib/api/api-client";
 
-// Configuración de roles
-const ROLES = [
-	{ id: "admin", label: "Administrador" },
-	{ id: "analyst", label: "Analista" },
-	{ id: "observer", label: "Observador" },
-];
+import { ROLES } from "../const/roles";
+import { useLoginUser, usePasswordToggle } from "../hooks";
 
-// Esquema de validación
-const loginSchema = z.object({
-	email: z.string().email("Correo no válido"),
-	password: z.string().min(1, "La contraseña es obligatoria"),
-	role: z.string().min(1, "Seleccione un rol"),
-});
-
-type LoginFormValues = z.infer<typeof loginSchema>;
+import { InputField, RigthAddon, RoleSelector } from ".";
 
 export const LoginForm = () => {
-	const [showPassword, setShowPassword] = useState(false);
-	const [serverError, setServerError] = useState<string | null>(null);
-
-	const {
-		register,
-		handleSubmit,
-		setValue,
-		watch,
-		formState: { errors, isSubmitting },
-	} = useForm<LoginFormValues>({
-		resolver: zodResolver(loginSchema),
-		defaultValues: {
-			email: "",
-			password: "",
-			role: "observer", // Por defecto enviará "observer" a la API
-		},
-	});
-
-	// eslint-disable-next-line react-hooks/incompatible-library
-	const selectedRole = watch("role");
-
-	const onSubmit = async (data: LoginFormValues) => {
-		setServerError(null);
-		try {
-			// Al enviar 'data', el campo 'role' ya lleva el valor en inglés (admin, analyst u observer)
-			await signIn(data);
-			window.location.href = "/dashboard";
-		} catch (error) {
-			if (error instanceof ApiError) {
-				setServerError(error.message || "Credenciales incorrectas o cuenta no aprobada");
-			} else {
-				setServerError("Error de conexión con el servidor");
-			}
-		}
-	};
+	const { register, handleSubmit, errors, isSubmitting, errorMessage } = useLoginUser();
+	const { showPassword, togglePasswordVisibility, inputType } = usePasswordToggle();
 
 	return (
 		<div className="w-full max-w-110">
@@ -81,69 +29,55 @@ export const LoginForm = () => {
 					<p className="text-muted-foreground text-sm">Acceda al portal del Observatorio Cubano</p>
 				</div>
 
-				<form className="flex flex-col gap-5" onSubmit={handleSubmit(onSubmit)}>
-					{/* Usuario */}
-					<div className="flex flex-col gap-2 text-left">
-						<Label htmlFor="email">Correo Electrónico</Label>
-						<div className="relative">
-							<User className="text-muted-foreground absolute top-1/2 left-3 size-5 -translate-y-1/2" />
-							<Input
-								{...register("email")}
-								id="email"
-								className={`bg-background border-input h-12 pl-11 ${errors.email ? "border-destructive" : ""}`}
-								placeholder="nombre@ejemplo.com"
-							/>
-						</div>
-						{errors.email && (
-							<span className="text-destructive text-xs">{errors.email.message}</span>
-						)}
-					</div>
+				<form
+					className="flex flex-col gap-5"
+					onSubmit={handleSubmit}
+					noValidate
+					aria-label="Formulario de inicio de sesión"
+				>
+					{/* Email */}
+					<InputField
+						name="email"
+						label="Correo Electrónico"
+						type="email"
+						field={register("email")}
+						error={errors.email}
+						placeholder="nombre@ejemplo.com"
+						required
+						icon={<User size={18} strokeWidth={2.5} />}
+						labelClassName="font-semibold"
+					/>
 
 					{/* Contraseña */}
-					<div className="flex flex-col gap-2 text-left">
-						<Label htmlFor="password">Contraseña</Label>
-						<div className="relative">
-							<Lock className="text-muted-foreground absolute top-1/2 left-3 size-5 -translate-y-1/2" />
-							<Input
-								{...register("password")}
-								id="password"
-								type={showPassword ? "text" : "password"}
-								className={`bg-background border-input h-12 pr-11 pl-11 ${errors.password ? "border-destructive" : ""}`}
-								placeholder="••••••••"
+					<InputField
+						name="password"
+						label="Contraseña"
+						type={inputType}
+						field={register("password")}
+						error={errors.password}
+						placeholder="••••••••"
+						required
+						icon={<Lock size={18} strokeWidth={2.5} />}
+						labelClassName="font-semibold"
+						rightAddon={
+							<RigthAddon
+								showPassword={showPassword}
+								togglePasswordVisibility={togglePasswordVisibility}
 							/>
-							<button
-								type="button"
-								onClick={() => setShowPassword(!showPassword)}
-								className="text-muted-foreground hover:text-primary absolute top-1/2 right-3 flex -translate-y-1/2 items-center transition-colors"
-							>
-								{showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
-							</button>
-						</div>
-						{errors.password && (
-							<span className="text-destructive text-xs">{errors.password.message}</span>
-						)}
-					</div>
+						}
+					/>
 
 					{/* Selección de Rol */}
-					<div className="flex flex-col gap-2 text-left">
-						<Label>Tipo de Cuenta</Label>
-						<div className="bg-muted border-border flex gap-1 rounded-lg border p-1">
-							{ROLES.map((role) => (
-								<button
-									key={role.id}
-									type="button"
-									onClick={() => setValue("role", role.id)}
-									className={`flex-1 rounded-md py-1.5 text-xs font-semibold transition-all ${
-										selectedRole === role.id
-											? "bg-background text-primary shadow-sm"
-											: "text-muted-foreground hover:text-foreground"
-									}`}
-								>
-									{role.label}
-								</button>
-							))}
-						</div>
-					</div>
+					<RoleSelector
+						name="role"
+						label="Tipo de Cuenta"
+						options={ROLES.map((role) => ({ id: role.value, label: role.label }))}
+						field={register("role")}
+						error={errors.role}
+						required
+						icon={<User size={18} strokeWidth={2.5} />}
+						labelClassName="font-semibold text-foreground"
+					/>
 
 					{/* Recordarme */}
 					<div className="mt-1 flex items-center justify-between">
@@ -151,36 +85,61 @@ export const LoginForm = () => {
 							<input
 								type="checkbox"
 								className="border-input text-primary focus:ring-primary bg-background rounded"
+								aria-label="Recordarme en este dispositivo"
 							/>
 							<span className="text-muted-foreground group-hover:text-foreground transition-colors">
 								Recordarme
 							</span>
 						</label>
-						<Link href="/login" className="text-primary text-sm font-medium hover:underline">
+						<Link
+							href="/reset-password"
+							onClick={(e) => {
+								if (isSubmitting) {
+									e.preventDefault();
+								}
+							}}
+							className="text-primary text-sm font-medium hover:underline"
+						>
 							¿Olvidó su contraseña?
 						</Link>
 					</div>
 
-					{serverError && (
-						<div className="text-destructive bg-destructive/10 border-destructive/20 rounded-lg border p-2 text-center text-xs font-medium">
-							{serverError}
+					{/* Cartel de Error */}
+					{errorMessage && (
+						<div
+							role="alert"
+							aria-live="assertive"
+							aria-atomic="true"
+							className="text-destructive bg-destructive/10 border-destructive/30 rounded-lg border p-3 text-sm font-medium"
+						>
+							{errorMessage}
 						</div>
 					)}
 
 					<Button
 						type="submit"
 						disabled={isSubmitting}
-						className="bg-primary text-primary-foreground shadow-primary/20 mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-xl font-bold shadow-md transition-all hover:opacity-90 disabled:opacity-50"
+						aria-busy={isSubmitting}
+						aria-label={isSubmitting ? "Procesando login" : "Botón entrar"}
+						className="bg-primary text-primary-foreground shadow-primary/20 focus-visible:outline-ring mt-2 flex h-12 w-full items-center justify-center gap-2 rounded-xl font-bold shadow-md transition-all hover:opacity-90 focus-visible:ring-offset-2 focus-visible:outline-2 disabled:opacity-50"
 					>
 						<span>{isSubmitting ? "Entrando..." : "Entrar"}</span>
-						<LogIn size={20} />
+						<LogIn size={20} aria-hidden="true" />
 					</Button>
 				</form>
 
 				<div className="border-border mt-8 border-t pt-6 text-center">
 					<p className="text-muted-foreground text-sm">
-						¿No tiene una cuenta?
-						<Link href="/register" className="text-primary mt-1 block font-bold hover:underline">
+						¿No tiene una cuenta?{" "}
+						<Link
+							href="/register"
+							onClick={(e) => {
+								if (isSubmitting) {
+									e.preventDefault();
+								}
+							}}
+							className="text-primary font-bold hover:underline"
+						>
 							Solicite acceso aquí
 						</Link>
 					</p>
