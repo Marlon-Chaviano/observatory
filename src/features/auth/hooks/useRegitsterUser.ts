@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 
 import { ApiError } from "@/lib/api";
 
-import { DEFAULT_REGISTER_VALUES } from "../const/default-values";
+import { DEFAULT_AUTH_VALUES } from "../const/default-values";
 import { RegisterUserInput, registerUserSchema } from "../schemas/auth";
 import { signUp } from "../service";
 
@@ -21,7 +21,7 @@ export const useRegitsterUser = () => {
 		reset,
 	} = useForm<RegisterUserInput>({
 		resolver: zodResolver(registerUserSchema),
-		defaultValues: DEFAULT_REGISTER_VALUES,
+		defaultValues: DEFAULT_AUTH_VALUES,
 	});
 
 	const onSubmit = async (data: RegisterUserInput) => {
