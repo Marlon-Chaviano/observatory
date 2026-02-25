@@ -103,15 +103,11 @@ export interface SignUpResponse {
  */
 export async function signUp(payload: SignUpPayload): Promise<SignUpResponse> {
 	try {
-		const { role, ...userData } = payload;
-		const response = await apiClient.post<SignUpResponse>(
-			API_ENDPOINTS.AUTH.REGISTER(role),
-			userData,
-			{
-				// ❌ NO enviar cookies en registro (usuario aún no autenticado)
-				credentials: "omit",
-			}
-		);
+		// const { role, ...userData } = payload;
+		const response = await apiClient.post<SignUpResponse>(API_ENDPOINTS.AUTH.REGISTER, payload, {
+			// ❌ NO enviar cookies en registro (usuario aún no autenticado)
+			credentials: "omit",
+		});
 
 		return response;
 	} catch (error) {
