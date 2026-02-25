@@ -1,19 +1,14 @@
 "use client";
 
-import Link from "next/link";
-
 import { ArrowRight, CircleAlert, Mail, ShieldCheck, User } from "lucide-react";
 
-import { Button } from "@/components/primitives/Button";
+import { Button } from "@/components/primitives/";
 import { useRegitsterUser } from "@/features/auth/hooks/useRegitsterUser";
-import { cn } from "@/lib/utils";
 
 import { ROLES } from "../const/roles";
 import { usePasswordToggle } from "../hooks";
 
-import { InputField } from "./InputField";
-import { RoleSelector } from "./RoleSelector";
-import { RigthAddon } from ".";
+import { AuthSwitchLink, InputField, RigthAddon, RoleSelector } from "./";
 
 export const RegisterForm = () => {
 	const { register, handleSubmit, errors, isSubmitting, errorMessage } = useRegitsterUser();
@@ -145,26 +140,13 @@ export const RegisterForm = () => {
 					</Button>
 				</form>
 
-				<div className="border-border mt-8 border-t pt-6 text-center">
-					<p className="text-muted-foreground text-sm">
-						¿Ya tienes una cuenta?{" "}
-						<Link
-							href="/login"
-							aria-disabled={isSubmitting}
-							onClick={(e) => {
-								if (isSubmitting) {
-									e.preventDefault();
-								}
-							}}
-							className={cn(
-								isSubmitting ? "pointer-events-none opacity-50" : "",
-								"text-primary font-medium hover:underline"
-							)}
-						>
-							Inicia sesión aquí
-						</Link>
-					</p>
-				</div>
+				{/* Switch Login */}
+				<AuthSwitchLink
+					question="¿Ya tienes una cuenta?"
+					text_action="Inicia sesión aquí"
+					disabled={isSubmitting}
+					url="/login"
+				/>
 			</div>
 		</div>
 	);

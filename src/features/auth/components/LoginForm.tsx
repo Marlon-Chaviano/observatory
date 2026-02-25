@@ -1,15 +1,13 @@
 "use client";
 
-import Link from "next/link";
-
 import { Lock, LogIn, User } from "lucide-react";
 
-import { Button } from "@/components/primitives/Button";
+import { Button } from "@/components/primitives/";
 
 import { ROLES } from "../const/roles";
 import { useLoginUser, usePasswordToggle } from "../hooks";
 
-import { InputField, RigthAddon, RoleSelector } from ".";
+import { AuthSwitchLink, InputField, RigthAddon, RoleSelector } from ".";
 
 export const LoginForm = () => {
 	const { register, handleSubmit, errors, isSubmitting, errorMessage } = useLoginUser();
@@ -80,7 +78,8 @@ export const LoginForm = () => {
 					/>
 
 					{/* Recordarme */}
-					<div className="mt-1 flex items-center justify-between">
+					{/* Se comento porque aun no estan implementadas estas funcionalidades en el backend */}
+					{/* <div className="mt-1 flex items-center justify-between">
 						<label className="group flex cursor-pointer items-center gap-2 text-sm">
 							<input
 								type="checkbox"
@@ -102,7 +101,7 @@ export const LoginForm = () => {
 						>
 							¿Olvidó su contraseña?
 						</Link>
-					</div>
+					</div> */}
 
 					{/* Cartel de Error */}
 					{errorMessage && (
@@ -128,22 +127,12 @@ export const LoginForm = () => {
 					</Button>
 				</form>
 
-				<div className="border-border mt-8 border-t pt-6 text-center">
-					<p className="text-muted-foreground text-sm">
-						¿No tiene una cuenta?{" "}
-						<Link
-							href="/register"
-							onClick={(e) => {
-								if (isSubmitting) {
-									e.preventDefault();
-								}
-							}}
-							className="text-primary font-bold hover:underline"
-						>
-							Solicite acceso aquí
-						</Link>
-					</p>
-				</div>
+				<AuthSwitchLink
+					question="¿No tiene una cuenta?"
+					text_action="Solicite acceso aquí"
+					disabled={isSubmitting}
+					url="/register"
+				/>
 			</div>
 		</div>
 	);
