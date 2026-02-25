@@ -1,3 +1,4 @@
+export * from "./AuthSwitchLink";
 export * from "./ErrorText";
 export * from "./InputField";
 export * from "./LoginForm";
