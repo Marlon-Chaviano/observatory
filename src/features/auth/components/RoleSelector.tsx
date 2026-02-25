@@ -46,7 +46,7 @@ export function RoleSelector({
 		<div className={cn("flex flex-col gap-2 text-left", containerClassName)}>
 			{/* Legend para agrupar los radios */}
 			<fieldset className="border-0 p-0" role="radiogroup">
-				<legend className={cn("text-foreground flex items-center gap-2", labelClassName)}>
+				<legend className={cn("text-foreground flex items-center gap-2 text-sm", labelClassName)}>
 					{icon}
 					{label}
 					{required && (
