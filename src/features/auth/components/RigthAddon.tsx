@@ -15,9 +15,9 @@ export const RigthAddon = ({
 			className="text-muted-foreground hover:text-primary focus-visible:outline-ring flex cursor-pointer items-center rounded p-1 transition-colors focus-visible:ring-offset-2 focus-visible:outline-2"
 		>
 			{showPassword ? (
-				<EyeOff size={20} aria-hidden="true" />
-			) : (
 				<Eye size={20} aria-hidden="true" />
+			) : (
+				<EyeOff size={20} aria-hidden="true" />
 			)}
 		</button>
 	);
