@@ -5,6 +5,7 @@
  * Sends credentials without cookies since the user hasn't authenticated yet.
  */
 
+import { User } from "@/features/users/types";
 import { apiClient, ApiError, ApiErrorType } from "@/lib/api/api-client";
 import { API_ENDPOINTS } from "@/lib/constants";
 
@@ -31,23 +32,10 @@ export interface SignInPayload {
  * Login response from the server
  * After successful login, the backend sets an HTTP-only cookie
  */
+
 export interface SignInResponse {
-	/**
-	 * Unique user identifier
-	 */
-	user_id: number;
-	/**
-	 * Username of the authenticated user
-	 */
-	username: string;
-	/**
-	 * User email address
-	 */
-	email?: string;
-	/**
-	 * Success message from the server
-	 */
-	message?: string;
+	data: User;
+	success: boolean;
 }
 
 /**

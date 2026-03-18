@@ -5,6 +5,7 @@
  * Sends credentials without cookies since the user hasn't authenticated yet.
  */
 
+import { User } from "@/features/users";
 import { apiClient, ApiError, ApiErrorType } from "@/lib/api/api-client";
 import { API_ENDPOINTS } from "@/lib/constants";
 
@@ -38,26 +39,8 @@ export interface SignUpPayload {
  * After successful registration, the user can log in with their credentials.
  */
 export interface SignUpResponse {
-	/**
-	 * Unique user identifier assigned by the server
-	 */
-	user_id: number;
-	/**
-	 * Username that was registered
-	 */
-	username: string;
-	/**
-	 * Email address that was registered
-	 */
-	email: string;
-	/**
-	 * Success message from the server
-	 */
-	message?: string;
-	/**
-	 * Whether email verification is required
-	 */
-	requires_email_verification?: boolean;
+	data: User;
+	success: boolean;
 }
 
 /**
