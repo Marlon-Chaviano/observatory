@@ -1,8 +1,19 @@
 // Page temporal para verificar el funcionamiento del Navbar
-export default function About() {
+import Footer from "./Footer";
+import Hero from "./Hero";
+import LoginBanner from "./LoginBanner";
+import MissionVision from "./MissionVision";
+import Navbar from "./Navbar";
+import TeamGrid from "./TeamGrid";
+export default function AboutPage() {
 	return (
-		<div className="flex min-h-[80vh] min-w-[90vw] items-center justify-center">
-			<p>About Page</p>
-		</div>
+		<>
+			<Navbar />
+			<Hero />
+			<MissionVision />
+			<TeamGrid />
+			<LoginBanner />
+			<Footer />
+		</>
 	);
 }
