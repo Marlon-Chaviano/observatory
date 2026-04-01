@@ -10,8 +10,8 @@ export const NAVIGATION_MAIN: NavigationItem[] = [
 
 // Call-to-action navigation link
 export const NAVIGATION_CTA: NavigationItem = {
-	label: "Acceso Intranet",
-	href: "/intranet_acces",
+	label: "Iniciar Sesión",
+	href: "/login",
 };
 
 // Modules navigation links
