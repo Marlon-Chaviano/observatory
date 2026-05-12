@@ -11,7 +11,7 @@ export const API_ENDPOINTS = {
 	USERS: "/users",
 	AUTH: {
 		LOGIN: "/auth/login/",
-		REGISTER: "/auth/register/",
+		REGISTER: "/auth/registro/",
 		LOGOUT: "/auth/logout",
 	},
 	BILLING: "/billing",
