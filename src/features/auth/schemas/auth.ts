@@ -16,7 +16,20 @@ const baseAuthSchema = z.object({
 	password: z
 		.string()
 		.min(8, "La contraseña debe tener al menos 8 caracteres")
-		.max(128, "La contraseña no puede exceder 128 caracteres"),
+		.max(128, "La contraseña no puede exceder 128 caracteres")
+		.refine(
+			(password) => /[A-Z]/.test(password),
+			"La contraseña debe contener al menos una mayúscula"
+		)
+		.refine(
+			(password) => /[a-z]/.test(password),
+			"La contraseña debe contener al menos una minúscula"
+		)
+		.refine((password) => /[0-9]/.test(password), "La contraseña debe contener al menos un número")
+		.refine(
+			(password) => /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]/.test(password),
+			"La contraseña debe contener al menos un carácter especial"
+		),
 	role: authRoleSchema,
 });
 
