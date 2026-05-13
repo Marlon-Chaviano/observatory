@@ -33,14 +33,14 @@ export const LoginForm = () => {
 					noValidate
 					aria-label="Formulario de inicio de sesión"
 				>
-					{/* Email */}
+					{/* username */}
 					<InputField
-						name="email"
-						label="Correo Electrónico"
-						type="email"
-						field={register("email")}
-						error={errors.email}
-						placeholder="nombre@ejemplo.com"
+						name="username"
+						label="Nombre de Usuario"
+						type="username"
+						field={register("username")}
+						error={errors.username}
+						placeholder="usuarioejemplo2026"
 						required
 						icon={<User size={18} strokeWidth={2.5} />}
 						labelClassName="font-semibold"

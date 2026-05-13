@@ -22,7 +22,7 @@ export const useLoginUser = () => {
 	} = useForm<LoginUserInput>({
 		resolver: zodResolver(loginUserSchema),
 		defaultValues: {
-			email: DEFAULT_AUTH_VALUES.email,
+			username: DEFAULT_AUTH_VALUES.username,
 			password: DEFAULT_AUTH_VALUES.password,
 			role: DEFAULT_AUTH_VALUES.role,
 		},
