@@ -7,12 +7,11 @@ const authRoleSchema = z.enum(["observer", "analyst", "admin"] as const, {
 
 // Esquema base para campos comunes de autenticación
 const baseAuthSchema = z.object({
-	email: z
+	username: z
 		.string()
-		.trim()
-		.toLowerCase()
-		.min(1, "El correo es obligatorio")
-		.email("Correo electrónico inválido"),
+		.min(3, "El nombre de usuario debe tener al menos 3 caracteres")
+		.max(50, "El nombre de usuario no puede exceder 50 caracteres")
+		.trim(),
 	password: z
 		.string()
 		.min(8, "La contraseña debe tener al menos 8 caracteres")
@@ -36,11 +35,12 @@ const baseAuthSchema = z.object({
 // Esquema de registro de usuario
 export const registerUserSchema = baseAuthSchema
 	.extend({
-		username: z
+		email: z
 			.string()
-			.min(3, "El nombre de usuario debe tener al menos 3 caracteres")
-			.max(50, "El nombre de usuario no puede exceder 50 caracteres")
-			.trim(),
+			.trim()
+			.toLowerCase()
+			.min(1, "El correo es obligatorio")
+			.email("Correo electrónico inválido"),
 		confirmPassword: z.string().min(1, "Debes confirmar la contraseña"),
 	})
 	.superRefine((data, context) => {
