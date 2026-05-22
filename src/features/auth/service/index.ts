@@ -26,5 +26,5 @@
  */
 
 export { logout, type LogoutResponse } from "./logout";
-export { signIn, type SignInPayload, type SignInResponse } from "./sign_in";
-export { signUp, type SignUpPayload, type SignUpResponse } from "./sign_up";
+export { signIn, type SignInResponse } from "./sign_in";
+export { signUp, type SignUpResponse } from "./sign_up";
