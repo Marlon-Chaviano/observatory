@@ -25,10 +25,8 @@ export const useRegitsterUser = () => {
 	});
 
 	const onSubmit = async (data: RegisterUserInput) => {
-		const { confirmPassword: _confirmPassword, ...payload } = data;
-
 		try {
-			await signUp(payload);
+			await signUp(data);
 			reset();
 			router.push("/");
 		} catch (error) {

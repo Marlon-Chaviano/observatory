@@ -9,24 +9,7 @@ import { User } from "@/features/users/types";
 import { apiClient, ApiError, ApiErrorType } from "@/lib/api/api-client";
 import { API_ENDPOINTS } from "@/lib/constants";
 
-/**
- * Login request payload
- */
-export interface SignInPayload {
-	/**
-	 * Email address of the user
-	 * Must exist in the database
-	 */
-	email: string;
-	/**
-	 * User password
-	 */
-	password: string;
-	/**
-	 * User role for the login
-	 */
-	role: string;
-}
+import { LoginUserInput } from "../schemas/auth";
 
 /**
  * Login response from the server
@@ -47,14 +30,14 @@ export interface SignInResponse {
  *
  * Subsequent requests will automatically include this cookie via `credentials: 'include'`.
  *
- * @param payload - Object containing email and password
+ * @param payload - Object containing username and password
  * @returns Promise resolving to the login response with user data
  * @throws ApiError if credentials are invalid or server error occurs
  *
  * @example
  * ```ts
  * try {
- *   const user = await signIn({ email: 'usuario@example.com', password: 'MiContraseña123!' });
+ *   const user = await signIn({ username: 'usuario', password: 'MiContraseña123!' });
  *   console.log('Logged in as:', user.username);
  *   // Cookie is now set, subsequent requests are authenticated
  * } catch (error) {
@@ -64,7 +47,7 @@ export interface SignInResponse {
  * }
  * ```
  */
-export async function signIn(payload: SignInPayload): Promise<SignInResponse> {
+export async function signIn(payload: LoginUserInput): Promise<SignInResponse> {
 	try {
 		// const { role, ...credentials } = payload;
 		const response = await apiClient.post<SignInResponse>(API_ENDPOINTS.AUTH.LOGIN, payload, {

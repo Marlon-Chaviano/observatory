@@ -9,30 +9,11 @@ import { User } from "@/features/users";
 import { apiClient, ApiError, ApiErrorType } from "@/lib/api/api-client";
 import { API_ENDPOINTS } from "@/lib/constants";
 
+import { RegisterUserInput } from "../schemas/auth";
+
 /**
  * Sign up request payload
  */
-export interface SignUpPayload {
-	/**
-	 * Email address for account recovery and notifications
-	 * Must be unique in the system
-	 */
-	email: string;
-	/**
-	 * Desired username for the new account
-	 * Must be unique in the system
-	 */
-	username: string;
-	/**
-	 * Password for authentication
-	 * Should meet security requirements (min length, complexity, etc.)
-	 */
-	password: string;
-	/**
-	 * User role for the new account
-	 */
-	role: string;
-}
 
 /**
  * Sign up response from the server
@@ -84,10 +65,11 @@ export interface SignUpResponse {
  * }
  * ```
  */
-export async function signUp(payload: SignUpPayload): Promise<SignUpResponse> {
+export async function signUp(payload: RegisterUserInput): Promise<SignUpResponse> {
 	try {
 		// const { role, ...userData } = payload;
-		const response = await apiClient.post<SignUpResponse>(API_ENDPOINTS.AUTH.REGISTER, payload, {
+		const { confirmPassword: _confirmPassword, ...userData } = payload;
+		const response = await apiClient.post<SignUpResponse>(API_ENDPOINTS.AUTH.REGISTER, userData, {
 			// ❌ NO enviar cookies en registro (usuario aún no autenticado)
 			credentials: "omit",
 		});
