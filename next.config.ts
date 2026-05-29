@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
 				destination: `${process.env.NEXT_PUBLIC_API_URL}/api/:path*/`,
 			},
 		];
+	},	
 	images: {
 		domains: ["lh3.googleusercontent.com"],
 	},
